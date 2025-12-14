@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    <title>OBMC School Club Information</title>
+    <style>
+        body { 
+            text-align: center; 
+            font-family: 'Times New Roman', Times, serif; 
+            padding: 0;
+            background-color: #f0f8ff; 
+            color: #4b6962;
+        }
+        .header-bar {
+            background-color: #0056b3; 
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header-bar a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        select { 
+            padding: 8px; 
+            font-size: 16px; 
+            margin: 10px; 
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        #clubInfo { 
+            margin-top: 20px; 
+            padding: 15px;
+            border: 1px solid #0056b3;
+            border-radius: 6px;
+        }
+        #clubInfo p strong {
+            display: inline-block;
+            width: 150px;
+            color: #0056b3;
+        }
+        h1 {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <a href="index.html">Home</a>
+        <a href="gwa_calculator.html">GWA Calculator</a>
+        <a href="school_clubs.html">School Club Info</a>
+    </div>
+    <div class="container">
+        <h1>OBMC School Club Information</h1>
+        
+        <div style="text-align: center;">
+            <label for="club-select" style="font-weight: bold;">Select a club to view details:</label>
+            <select id="club-select">
+                <option value="" disabled selected>Select a club</option>
+                <option>Marching Band</option>
+                <option>Glee Club</option>
+                <option>Dance Club</option>
+                <option>Math Club</option>
+                <option>Science Club</option>
+                <option>Communications Arts Club</option>
+                <option>COCC (Cadet Officer Candidate Course)</option>
+                <option>Social Science Club</option>
+                <option>Volleyball Varsity</option>
+                <option>Basketball Varsity</option>
+            </select>
+        </div>
+
+        <div id="clubInfo">
+            <p>Select a club from the dropdown above to see its meeting time, location, and adviser!</p>
+        </div>
+
+        <py-config>
+            packages = []
+        </py-config>
+
+        <py-script>
+from js import document
+
+clubs = {
+    "Marching Band": {
+        "Description": "A musical ensemble that performs at events",
+        "Meeting Time": "Tuesday and Wednesday 03:00-4:30 PM",
+        "Location": "Band Room",
+        "Advisor": "Mr. Emilio Alumno",
+        "Number of members": 25
+    },
+    "Glee Club": {
+        "Description": "Choir group that performs vocal music",
+        "Meeting Time": "Monday 03:00-05:00 PM",
+        "Location": "High School Music Room",
+        "Advisor": "Mr. Denver Martin",
+        "Number of members": 27
+    },
+    "Dance Club": {
+        "Description": "A group that practices and performs various dance styles",
+        "Meeting Time": "Tuesday 03:00-05:00 PM",
+        "Location": "Teatro Preciosa",
+        "Advisor": "Mr. Alfred Cases",
+        "Number of members": 30
+    },
+    "Math Club": {
+        "Description": "A club for students interested in mathematics",
+        "Meeting Time": "Monday 02:30-03:00 PM",
+        "Location": "Room 404",
+        "Advisor": "Mr. Nicole Gabuya",
+        "Number of members": 25
+    },
+    "Science Club": {
+        "Description": "A club for students interested in science experiments and projects",
+        "Meeting Time": "Tuesday 03:00-04:00 PM",
+        "Location": "Room 404",
+        "Advisor": "Ms. Jameelyn Maramag",
+        "Number of members": 24
+    },
+    "Communications Arts Club": {
+        "Description": "A club for students interested in media, journalism and communications",
+        "Meeting Time": "Wednesday 03:00-04:00 PM, Friday 03:00-04:00 PM",
+        "Location": "Room 406",
+        "Advisor": "Ms. Yannis Fernandez",
+        "Number of members": 27
+    },
+    "COCC (Cadet Officer Candidate Course)": {
+        "Description": "A leadership training program for students interested in military training",
+        "Meeting Time": "Wednesday 02:30-04:30 PM",
+        "Location": "Quadrangle/Teatro Preciosa",
+        "Advisor": "SSgt. Jemima David PA (Res)",
+        "Number of members": 20
+    },
+    "Social Science Club": {
+        "Description": "A club for students interested in history, geography and social studies",
+        "Meeting Time": "Tuesday 03:00-04:00 PM",
+        "Location": "Room 409",
+        "Advisor": "Mr. Roberto Lim",
+        "Number of members": 23
+    },
+    "Volleyball Varsity": {
+        "Description": "A competitive sports team for students interested in Volleyball",
+        "Meeting Time": "Wednesday 03:00-04:00 PM",
+        "Location": "Quadrangle",
+        "Advisor": "Mr. Adrian Ruiz",
+        "Number of members": 23
+    },
+    "Basketball Varsity": {
+        "Description": "A competitive sports team for students interested in Basketball",
+        "Meeting Time": "Monday 03:00-04:00 PM",
+        "Location": "Quadrangle",
+        "Advisor": "Mr. Adrian Ruiz",
+        "Number of members": 23
+    }
+}
+
+def display_club_info(event=None): # Added optional 'event' argument
+    select_elem = document.getElementById("club-select")
+    info_div = document.getElementById("clubInfo")
+    
+    selected_club = select_elem.value
+    
+    if selected_club in clubs:
+        club_data = clubs[selected_club]
+        
+        # Build the HTML output
+        html_output = f"""
+        <h3>Details for: {selected_club}</h3>
+        <p><strong>Description:</strong> {club_data['Description']}</p>
+        <p><strong>Meeting Time:</strong> {club_data['Meeting Time']}</p>
+        <p><strong>Location:</strong> {club_data['Location']}</p>
+        <p><strong>Advisor:</strong> {club_data['Advisor']}</p>
+        <p><strong>Number of Members:</strong> {club_data['Number of members']}</p>
+        """
+        info_div.innerHTML = html_output
+    else:
+        # Default message if nothing is selected or the first disabled option is shown
+        info_div.innerHTML = "<p>Please select a club from the list.</p>"
+
+# FIX: Manually attach the Python function to the HTML 'onchange' event 
+# after the PyScript interpreter has loaded, ensuring all elements are available.
+select_element = document.getElementById("club-select")
+select_element.onchange = display_club_info
+
+        </py-script>
+    </div>
+</body>
+</html>
